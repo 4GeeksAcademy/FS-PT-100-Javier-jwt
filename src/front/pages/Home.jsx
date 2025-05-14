@@ -1,37 +1,22 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-import { Register } from "../components/register.jsx";
-import { Login } from "../components/login.jsx";
-import { Private } from "../components/private.jsx";
-import userServices from "../services/userServices.js";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export const Home = () => {
 
-	const { store, dispatch } = useGlobalReducer()
+	const navigate = useNavigate()
 
-
-
-	const handleClick = () => {
-		console.log('asdasdasd');
-		
-		userServices.getUserInfo().then(data => dispatch({type: 'get_user_info', payload: data})
-		)
+	const handleProfile = () => {
+		console.log('click')
+		//si tenemos el token, lo pasamos a su vista privada, sino que haga login
+		localStorage.getItem('token')? navigate('/private') : navigate('/login')
 	}
-
 
 
 	return (
 		<div className="text-center mt-5">
-			<h2>first register or login</h2>
-			<Register />
-
-			<Login />
-			<h2>then</h2>
-			<button onClick={handleClick}> Get your info after login/registering</button>
-
-			{/* si tengo info en store.user, muestra private */}
-			{localStorage.getItem('token') && <Private />}
+			<h2>Welcome, go to <Link to={'/register'}>Register</Link> if you are new, else <Link to={'/login'}>Login</Link>
+			{" "}Or you can go to your <span className="nav nav-link pointer" onClick={handleProfile}>Profile!</span>
+			</h2>
 
 		</div>
 	);

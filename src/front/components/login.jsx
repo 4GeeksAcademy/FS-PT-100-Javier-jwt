@@ -1,6 +1,7 @@
 import { useState } from "react"
 import userServices from "../services/userServices"
 import useGlobalReducer from "../hooks/useGlobalReducer"
+import { useNavigate } from "react-router-dom"
 
 export const Login = () => {
     const { store, dispatch } = useGlobalReducer()
@@ -8,7 +9,7 @@ export const Login = () => {
         email: "",
         password: ""
     })
-
+    const navigate = useNavigate()
     const handleChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -17,7 +18,7 @@ export const Login = () => {
         e.preventDefault();
         console.log(formData)
         // userServices.login(formData).then(data => dispatch({ type: 'login_register', payload: data }))
-        userServices.login(formData).then(data => console.log(data ))
+        userServices.login(formData).then(data => data.success && navigate('/private'))
     }
 
     return (
